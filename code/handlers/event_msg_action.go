@@ -4,6 +4,7 @@ import (
 	"github.com/k0kubun/pp/v3"
 	"log"
 	"start-feishubot/services/chatgpt"
+	"start-feishubot/services/feishu"
 	"start-feishubot/services/openai"
 	"time"
 )
@@ -12,7 +13,30 @@ type MessageAction struct { /*消息*/
 	chatgpt *chatgpt.ChatGPT
 }
 
+func (m *MessageAction) MsgList(a *ActionInfo) string {
+	//get recent message
+	chatId := a.info.chatId
+	client := feishu.GetClient()
+	msgs, err := client.GetCustomHistoryMsg(feishu.
+		CustomHistoryMsg{
+		ChatId: *chatId,
+		During: 60 * 60 * 60 * 20,
+		Size:   50,
+	})
+	if err != nil {
+		log.Println("get msg list error", err)
+		return ""
+	}
+	return msgs
+}
+
 func (m *MessageAction) Execute(a *ActionInfo) bool {
+	//get recent message
+	msgs := m.MsgList(a)
+	if msgs == "" {
+		return false
+	}
+	pp.Println(msgs)
 	cardId, err2 := sendOnProcess(a)
 	if err2 != nil {
 		return false
@@ -31,9 +55,16 @@ func (m *MessageAction) Execute(a *ActionInfo) bool {
 		return
 	})
 	defer noContentTimeout.Stop()
-	msg := a.handler.sessionCache.GetMsg(*a.info.sessionId)
+
+	var msg []openai.Messages
 	msg = append(msg, openai.Messages{
-		Role: "user", Content: a.info.qParsed,
+		Role: "system",
+		Content: "下面我会给出一系列群聊对话，帮我总结出这段时间内群聊对话的主要内容," +
+			"\n1-注意，直接给出分析结果即可，不要复述对话内容\n2." + "按照用户名对每个人表达的内容做出简短地总结性归纳",
+	})
+
+	msg = append(msg, openai.Messages{
+		Role: "user", Content: msgs,
 	})
 	go func() {
 		defer func() {

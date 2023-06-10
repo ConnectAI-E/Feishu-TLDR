@@ -11,6 +11,7 @@ import (
 	"os"
 	"start-feishubot/handlers"
 	"start-feishubot/initialization"
+	"start-feishubot/services/feishu"
 	"start-feishubot/services/openai"
 	"start-feishubot/utils"
 
@@ -32,6 +33,7 @@ func main() {
 	config := initialization.LoadConfig(*cfg)
 	initialization.LoadLarkClient(*config)
 	gpt := openai.NewChatGPT(*config)
+	feishu.NewClient(config.FeishuAppId, config.FeishuAppSecret)
 	handlers.InitHandlers(gpt, *config)
 
 	if config.EnableLog {

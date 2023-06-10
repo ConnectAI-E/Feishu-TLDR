@@ -3,7 +3,6 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"github.com/k0kubun/pp/v3"
 	larkim "github.com/larksuite/oapi-sdk-go/v3/service/im/v1"
 	"start-feishubot/initialization"
 	"start-feishubot/services/openai"
@@ -47,8 +46,8 @@ type ProcessMentionAction struct { //是否机器人应该处理
 }
 
 func (*ProcessMentionAction) Execute(a *ActionInfo) bool {
-	pp.Println("mention", a.info)
 	// 私聊直接过
+	//pp.Println("mention", a.info)
 	if a.info.handlerType == UserHandler {
 		//	请在群聊中唤起机器人
 		sendMsg(*a.ctx, "🤖️：请在群聊中唤起TLDR机器人~", a.info.chatId)

@@ -3,7 +3,6 @@ package feishu
 import (
 	"context"
 	larkcontact "github.com/larksuite/oapi-sdk-go/v3/service/contact/v3"
-	"github.com/patrickmn/go-cache"
 )
 
 func (c *Client) GetSenderName(senderOpenId string) string {
@@ -28,6 +27,7 @@ func (c *Client) GetSenderNameCache(senderOpenId string) string {
 		return username.(string)
 	}
 	username = c.GetSenderName(senderOpenId)
-	c.Cache.Set(senderOpenId, username, cache.DefaultExpiration)
+	///2h
+	c.Cache.Set(senderOpenId, username, 7200)
 	return username.(string)
 }

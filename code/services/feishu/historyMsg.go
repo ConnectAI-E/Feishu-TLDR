@@ -55,23 +55,23 @@ func (c *Client) GetHistoryMsg(req HistoryMsgRequest) (
 }
 
 func (c *Client) GetCustomHistoryMsg(req CustomHistoryMsg) (
-	interface{}, error) {
+	string, error) {
 	// 获取当前时间，到秒
 	now := time.Now().Unix()
 	//获取起始时间
 	startTime := now - int64(req.During)
 	// 转换为字符串
 
-	msgList, err := c.GetHistoryMsg(HistoryMsgRequest{
+	msgStr, err := c.GetHistoryMsg(HistoryMsgRequest{
 		ChatId:    req.ChatId,
 		StartTime: fmt.Sprintf("%v", startTime),
 		EndTime:   fmt.Sprintf("%v", now),
 		Size:      req.Size,
 	})
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return msgList, nil
+	return msgStr, nil
 
 }
 

@@ -15,9 +15,17 @@ type Client struct {
 	Cache  *cache.Cache
 }
 
+var ClientInstance *Client
+
 func NewClient(appId string, appSecret string) *Client {
-	return &Client{
+	ClientInstance = &Client{
 		Client: lark.NewClient(appId, appSecret),
 		Cache:  cache.New(cache.NoExpiration, cache.NoExpiration),
 	}
+	return ClientInstance
+
+}
+
+func GetClient() *Client {
+	return ClientInstance
 }
