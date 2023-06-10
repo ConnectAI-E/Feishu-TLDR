@@ -7,7 +7,6 @@
     <br>
     <p align='center'>
         <img src='https://github.com/ConnectAI-E/Feishu-TLDR/assets/50035229/33b4e113-cd10-46d6-8da7-56e1bc40cc34' width='800'/>
-   
     </p>
 </details>
 
