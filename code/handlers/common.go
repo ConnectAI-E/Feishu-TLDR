@@ -13,7 +13,6 @@ func msgFilter(msg string) string {
 	//replace @到下一个非空的字段 为 ''
 	regex := regexp.MustCompile(`@[^ ]*`)
 	return regex.ReplaceAllString(msg, "")
-
 }
 func parseContent(content string) string {
 	//"{\"text\":\"@_user_1  hahaha\"}",
