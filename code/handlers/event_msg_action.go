@@ -6,6 +6,7 @@ import (
 	"start-feishubot/services/chatgpt"
 	"start-feishubot/services/feishu"
 	"start-feishubot/services/openai"
+	"start-feishubot/utils"
 	"time"
 )
 
@@ -30,13 +31,12 @@ func (m *MessageAction) MsgList(a *ActionInfo) string {
 	return msgs
 }
 
-func (m *MessageAction) Execute(a *ActionInfo) bool {
+func (m *MessageAction) Summary(a *ActionInfo) bool {
 	//get recent message
 	msgs := m.MsgList(a)
 	if msgs == "" {
 		return false
 	}
-	pp.Println(msgs)
 	cardId, err2 := sendOnProcess(a)
 	if err2 != nil {
 		return false
@@ -136,6 +136,14 @@ func (m *MessageAction) Execute(a *ActionInfo) bool {
 	}
 }
 
+func (m *MessageAction) Execute(a *ActionInfo) bool {
+	if _, foundSystem := utils.EitherTrimEqual(a.info.qParsed,
+		"/summary", "总结"); foundSystem {
+		return m.Summary(a)
+	}
+	return true
+}
+
 func sendOnProcess(a *ActionInfo) (*string, error) {
 	// send 正在处理中
 	cardId, err := sendOnProcessCard(*a.ctx, a.info.sessionId, a.info.msgId)
@@ -144,4 +152,12 @@ func sendOnProcess(a *ActionInfo) (*string, error) {
 	}
 	return cardId, nil
 
+}
+
+type FinalAction struct { /*消息*/
+}
+
+func (m *FinalAction) Execute(a *ActionInfo) bool {
+	sendMsg(*a.ctx, "不支持的命令，请输入 /help 查看帮助", a.info.chatId)
+	return true
 }

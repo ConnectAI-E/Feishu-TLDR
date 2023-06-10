@@ -101,7 +101,7 @@ func (m MessageHandler) msgReceivedHandler(ctx context.Context, event *larkim.P2
 		&MessageAction{
 			chatgpt: chatgpt.NewGpt3(&m.config),
 		}, //消息处理
-
+		&FinalAction{},
 	}
 
 	chain(data, actions...)

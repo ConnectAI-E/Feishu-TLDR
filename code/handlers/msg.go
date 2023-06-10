@@ -692,9 +692,8 @@ func sendHelpCard(ctx context.Context,
 		withHeader("🎒需要帮助吗？", larkcard.TemplateBlue),
 		withMainMd("**我是TL;DR机器人，帮你自动摘要群聊对话**"),
 		withSplitLine(),
-		withMainMd("🎲 **总结群聊对话** \n"+"文本回复 *总结* 或 */summary"+
-			"*+空格+时间范围"),
-		withMainMd("🪔 **私发群聊摘要**\n文本回复*摘要* 或 */abstract*+空格+时间范围"),
+		withMainMd("🎲 **总结群聊对话** \n"+"文本回复 *总结* 或 */summary*"),
+		withMainMd("🪔 **私发群聊摘要**\n文本回复*摘要* 或 */abstract*"),
 		withSplitLine(),
 		withMainMd("🎒 **需要更多帮助**\n文本回复 *帮助* 或 */help*"),
 	)
