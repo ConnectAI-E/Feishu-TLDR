@@ -1,6 +1,7 @@
 package feishu
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	larkim "github.com/larksuite/oapi-sdk-go/v3/service/im/v1"
@@ -28,7 +29,7 @@ type MsgInfo struct {
 }
 
 func (c *Client) GetHistoryMsg(req HistoryMsgRequest) (
-	[]MsgInfo, error) {
+	string, error) {
 	reqest := larkim.NewListMessageReqBuilder().
 		ContainerIdType("chat").
 		ContainerId(req.ChatId).
@@ -40,15 +41,17 @@ func (c *Client) GetHistoryMsg(req HistoryMsgRequest) (
 	resp, err := c.Client.Im.Message.List(context.Background(),
 		reqest)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	Items := resp.Data.Items
 	Items = filterTextMessage(Items)
-	var msgList []MsgInfo
+	var buffer bytes.Buffer
 	for _, msg := range Items {
-		msgList = append(msgList, getMsgField(msg))
+		msgField := getMsgField(msg, c)
+		msgStr := msgField.ToString()
+		buffer.WriteString(msgStr)
 	}
-	return msgList, nil
+	return buffer.String(), nil
 }
 
 func (c *Client) GetCustomHistoryMsg(req CustomHistoryMsg) (
@@ -82,10 +85,23 @@ func filterTextMessage(msgList []*larkim.Message) []*larkim.Message {
 	return newMsgList
 }
 
-func getMsgField(msg *larkim.Message) MsgInfo {
+func getMsgField(msg *larkim.Message, client *Client) MsgInfo {
 	var msgInfo MsgInfo
-	msgInfo.userName = *msg.Sender.Id
+	msgInfo.userName = client.GetSenderNameCache(*msg.Sender.Id)
 	msgInfo.CreateTime = *msg.CreateTime
 	msgInfo.Content = utils.ParseContent(*msg.Body.Content)
 	return msgInfo
+}
+
+// ToString to string
+// userName:CreateTime:Content||
+func (m *MsgInfo) ToString() string {
+	var buffer bytes.Buffer
+	buffer.WriteString(m.userName)
+	buffer.WriteString(":")
+	buffer.WriteString(m.CreateTime)
+	buffer.WriteString(":")
+	buffer.WriteString(m.Content)
+	buffer.WriteString("||")
+	return buffer.String()
 }

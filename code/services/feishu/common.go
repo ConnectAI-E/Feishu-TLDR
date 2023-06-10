@@ -1,6 +1,9 @@
 package feishu
 
-import lark "github.com/larksuite/oapi-sdk-go/v3"
+import (
+	lark "github.com/larksuite/oapi-sdk-go/v3"
+	"github.com/patrickmn/go-cache"
+)
 
 type BotConfig struct {
 	AppId     string `json:"app_id"`
@@ -9,10 +12,12 @@ type BotConfig struct {
 
 type Client struct {
 	Client *lark.Client
+	Cache  *cache.Cache
 }
 
 func NewClient(appId string, appSecret string) *Client {
 	return &Client{
 		Client: lark.NewClient(appId, appSecret),
+		Cache:  cache.New(cache.NoExpiration, cache.NoExpiration),
 	}
 }

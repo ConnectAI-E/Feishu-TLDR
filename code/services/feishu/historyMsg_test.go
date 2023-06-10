@@ -27,7 +27,7 @@ func TestClient_GetCustomHistoryMsg(t *testing.T) {
 	Client := NewClient(config.FeishuAppId, config.FeishuAppSecret)
 	reqMsg := &CustomHistoryMsg{
 		ChatId: "oc_76bcd5398733bd921487388a22e47daa",
-		During: 200,
+		During: 8200,
 		Size:   50,
 	}
 	resp, err := Client.GetCustomHistoryMsg(*reqMsg)
