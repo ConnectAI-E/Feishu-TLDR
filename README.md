@@ -16,7 +16,7 @@
 <br>
 
 <p align='center'>
-   飞书 ×（GPT）+ 实在不想读历史群聊消息
+   飞书 ×（GPT）+ Too Long Don't Read
 <br>
 <br>
     🚀 Feishu TLDR 🚀
