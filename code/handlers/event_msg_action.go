@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/k0kubun/pp/v3"
 	"log"
+	"start-feishubot/initialization"
 	"start-feishubot/services/chatgpt"
 	"start-feishubot/services/feishu"
 	"start-feishubot/services/openai"
@@ -12,6 +13,7 @@ import (
 
 type MessageAction struct { /*消息*/
 	chatgpt *chatgpt.ChatGPT
+	config  *initialization.Config
 }
 
 func (m *MessageAction) MsgList(a *ActionInfo) string {
@@ -21,7 +23,7 @@ func (m *MessageAction) MsgList(a *ActionInfo) string {
 	msgs, err := client.GetCustomHistoryMsg(feishu.
 		CustomHistoryMsg{
 		ChatId: *chatId,
-		During: 60 * 60 * 60 * 20,
+		During: 60 * 60 * 24 * 7,
 		Size:   50,
 	})
 	if err != nil {
@@ -59,7 +61,7 @@ func (m *MessageAction) Summary(a *ActionInfo) bool {
 	var msg []openai.Messages
 	msg = append(msg, openai.Messages{
 		Role:    "system",
-		Content: "你将得到一串聊天记录，希望你能够对这些记录进行摘要。要求简明扼要，以一段话的形式输出。",
+		Content: m.config.SummaryPrompt,
 	})
 
 	msg = append(msg, openai.Messages{

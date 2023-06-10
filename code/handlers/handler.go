@@ -100,6 +100,7 @@ func (m MessageHandler) msgReceivedHandler(ctx context.Context, event *larkim.P2
 		&RolePlayAction{},        //角色扮演处理
 		&MessageAction{
 			chatgpt: chatgpt.NewGpt3(&m.config),
+			config:  &m.config,
 		}, //消息处理
 		&FinalAction{},
 	}

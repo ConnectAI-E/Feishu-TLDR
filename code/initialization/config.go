@@ -29,6 +29,7 @@ type Config struct {
 	AzureDeploymentName        string
 	AzureResourceName          string
 	AzureOpenaiToken           string
+	SummaryPrompt              string
 }
 
 func LoadConfig(cfg string) *Config {
@@ -61,6 +62,7 @@ func LoadConfig(cfg string) *Config {
 		AzureDeploymentName:        getViperStringValue("AZURE_DEPLOYMENT_NAME", ""),
 		AzureResourceName:          getViperStringValue("AZURE_RESOURCE_NAME", ""),
 		AzureOpenaiToken:           getViperStringValue("AZURE_OPENAI_TOKEN", ""),
+		SummaryPrompt:              getViperStringValue("SUMMARY_PROMPT", ""),
 	}
 
 	return config
