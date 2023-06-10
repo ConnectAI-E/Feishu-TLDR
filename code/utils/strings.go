@@ -59,5 +59,13 @@ func ParseContent(content string) string {
 		return ""
 	}
 	text := contentMap["text"].(string)
+	text = limitMaxLen(text, 200)
 	return msgFilter(text)
+}
+
+func limitMaxLen(s string, maxLen int) string {
+	if len(s) > maxLen {
+		return s[:maxLen]
+	}
+	return s
 }

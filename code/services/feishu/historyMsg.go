@@ -99,8 +99,8 @@ func (m *MsgInfo) ToString() string {
 	var buffer bytes.Buffer
 	buffer.WriteString(m.userName)
 	buffer.WriteString(":")
-	buffer.WriteString(m.CreateTime)
-	buffer.WriteString(":")
+	//buffer.WriteString(m.CreateTime)
+	//buffer.WriteString(":")
 	buffer.WriteString(m.Content)
 	buffer.WriteString("||")
 	return buffer.String()

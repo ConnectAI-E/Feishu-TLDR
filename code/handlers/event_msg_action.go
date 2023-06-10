@@ -58,9 +58,8 @@ func (m *MessageAction) Summary(a *ActionInfo) bool {
 
 	var msg []openai.Messages
 	msg = append(msg, openai.Messages{
-		Role: "system",
-		Content: "下面我会给出一系列群聊对话，帮我总结出这段时间内群聊对话的主要内容," +
-			"\n1-注意，直接给出分析结果即可，不要复述对话内容\n2." + "按照用户名对每个人表达的内容做出简短地总结性归纳",
+		Role:    "system",
+		Content: "你将得到一串聊天记录，希望你能够对这些记录进行摘要。要求简明扼要，以一段话的形式输出。",
 	})
 
 	msg = append(msg, openai.Messages{
