@@ -690,18 +690,11 @@ func sendHelpCard(ctx context.Context,
 	sessionId *string, msgId *string) {
 	newCard, _ := newSendCard(
 		withHeader("🎒需要帮助吗？", larkcard.TemplateBlue),
-		withMainMd("**我是具备打字机效果的聊天机器人！**"),
+		withMainMd("**我是TL;DR机器人，帮你自动摘要群聊对话**"),
 		withSplitLine(),
-		withMdAndExtraBtn(
-			"** 🆑 清除话题上下文**\n文本回复 *清除* 或 */clear*",
-			newBtn("立刻清除", map[string]interface{}{
-				"value":     "1",
-				"kind":      ClearCardKind,
-				"chatType":  UserChatType,
-				"sessionId": *sessionId,
-			}, larkcard.MessageCardButtonTypeDanger)),
-		withMainMd("🛖 **内置角色列表** \n"+" 文本回复 *角色列表* 或 */roles*"),
-		withMainMd("🥷 **角色扮演模式**\n文本回复*角色扮演* 或 */system*+空格+角色信息"),
+		withMainMd("🎲 **总结群聊对话** \n"+"文本回复 *总结* 或 */summary"+
+			"*+空格+时间范围"),
+		withMainMd("🪔 **私发群聊摘要**\n文本回复*摘要* 或 */abstract*+空格+时间范围"),
 		withSplitLine(),
 		withMainMd("🎒 **需要更多帮助**\n文本回复 *帮助* 或 */help*"),
 	)

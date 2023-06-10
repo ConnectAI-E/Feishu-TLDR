@@ -48,7 +48,9 @@ type ProcessMentionAction struct { //是否机器人应该处理
 func (*ProcessMentionAction) Execute(a *ActionInfo) bool {
 	// 私聊直接过
 	if a.info.handlerType == UserHandler {
-		return true
+		//	请在群聊中唤起机器人
+		sendMsg(*a.ctx, "🤖️：请在群聊中唤起TLDR机器人~", a.info.chatId)
+		return false
 	}
 	// 群聊判断是否提到机器人
 	if a.info.handlerType == GroupHandler {
